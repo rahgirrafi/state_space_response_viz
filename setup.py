@@ -9,6 +9,11 @@ setup(
     name=package_name,
     version='0.1.0',
     packages=find_packages(exclude=['test']),
+    package_data={package_name: [
+        'templates/*',
+        'static/css/*',
+        'static/js/*.js',
+    ]},
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -28,6 +33,7 @@ setup(
     entry_points={
         'console_scripts': [
             'response_player = state_space_response_viz.player_node:main',
+            'response_monitor = state_space_response_viz.monitor_node:main',
         ],
     },
 )

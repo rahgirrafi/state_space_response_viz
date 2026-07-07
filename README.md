@@ -20,6 +20,31 @@ ros2 param set /response_player speed 0.5      # 0.25x .. 2x (any 0.01..10)
 ros2 param set /response_player seek 1.25      # jump to t = 1.25 s
 ```
 
+## Live controller monitor (`response_monitor`)
+
+A second, complementary node streams a **live performance dashboard** while a
+controller runs — not offline playback, but the loop's inner signals in real
+time. It consumes the Kontrol'Em controllers' `~/diagnostics` feed (enable it
+with `publish_diagnostics:=true` on the controller) plus `/joint_states`, and
+serves a same-origin **Flask + Server-Sent-Events** dashboard (no external JS,
+no CDN, no websocket lib).
+
+```
+ros2 run state_space_response_viz response_monitor \
+    --ros-args -p controller:=/lqr_controller
+# open http://127.0.0.1:8080
+```
+
+Panels: reference vs measured position, joint velocity, tracking error, control
+effort `u`, observer state `ξ̂`, performance tiles (RMS error, per-channel
+settling), timing (loop rate, execution time, deadline misses) and a
+validity/saturation badge. Panels needing the diagnostics feed grey out until
+`publish_diagnostics` is on; the observer panel stays empty for static-gain LQR.
+The message layout and full walkthrough live in the docs
+(`docs/runtime/diagnostics.md`). Signal decoding (`diagnostics.py`), the
+sliding-window buffer (`monitor_state.py`), and the metrics (`metrics.py`) are
+ROS-free and unit-tested.
+
 ## The canonical trajectory format
 
 `RobotTrajectory` (`state_space_control.trajectory`, npz schema

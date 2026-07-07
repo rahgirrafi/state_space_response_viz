@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kontrol'Em · live controller monitor</title>
+  <link rel="stylesheet" href="/static/css/monitor.css">
+</head>
+<body>
+  <header id="topbar">
+    <div class="brand">
+      <span class="dot off" id="conn"></span>
+      <strong>Live controller monitor</strong>
+      <code id="controller">—</code>
+    </div>
+    <div class="badges">
+      <span class="badge good" id="constraint">—</span>
+      <span class="badge good" id="deadline">—</span>
+    </div>
+  </header>
+
+  <section id="tiles">
+    <div class="tilebar" id="perf"></div>
+    <div class="settle-wrap">
+      <h3>Per-channel settling</h3>
+      <div id="settle"></div>
+    </div>
+  </section>
+
+  <main id="grid"></main>
+
+  <footer>
+    Streaming from <code>~/diagnostics</code> over Server-Sent Events.
+    Panels marked with an overlay need <code>publish_diagnostics:=true</code>
+    on the controller.
+  </footer>
+
+  <script type="module" src="/static/js/monitor.js"></script>
+</body>
+</html>
